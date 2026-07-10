@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Group Chat Application — API Documentation</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --dark: #1e293b;
+            --light: #f8fafc;
+            --border: #e2e8f0;
+            --success: #16a34a;
+            --error: #dc2626;
+            --code-bg: #0f172a;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--dark);
+            background-color: #ffffff;
+            display: flex;
+        }
+
+        /* Sidebar Navigation */
+        nav {
+            width: 260px;
+            background-color: var(--light);
+            border-right: 1px solid var(--border);
+            height: 100vh;
+            position: fixed;
+            padding: 2rem 1rem;
+            box-sizing: border-box;
+        }
+
+        nav h2 {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #475569;
+            font-size: 0.95rem;
+            transition: color 0.2s;
+        }
+
+        nav ul li a:hover {
+            color: var(--primary);
+        }
+
+        /* Main Content Container */
+        main {
+            margin-left: 260px;
+            padding: 3rem;
+            max-width: 800px;
+            box-sizing: border-box;
+        }
+
+        h1 { font-size: 2.2rem; margin-bottom: 0.5rem; }
+        h2 { font-size: 1.6rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem; margin-top: 2.5rem; }
+        h3 { font-size: 1.2rem; margin-top: 1.5rem; color: #334155; }
+
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border-radius: 4px;
+            color: white;
+            text-transform: uppercase;
+        }
+
+        .badge-post { background-color: #2563eb; }
+        .badge-get { background-color: #16a34a; }
+
+        .endpoint-block {
+            background: var(--light);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: monospace;
+            font-size: 1rem;
+        }
+
+        pre {
+            background-color: var(--code-bg);
+            color: #f8f8f2;
+            padding: 1rem;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+        }
+
+        .note {
+            background-color: #eff6ff;
+            border-left: 4px solid var(--primary);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <h2>Chat API Docs</h2>
+        <ul>
+            <li><strong>Authentication</strong></li>
+            <li><a href="#register">— Register</a></li>
+            <li><a href="#login">— Login</a></li>
+            <li><a href="#logout">— Logout</a></li>
+            <li><strong>Chat Core</strong></li>
+            <li><a href="#send">— Send Message</a></li>
+            <li><a href="#get">— Get Feed</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <h1>Group Chat API Documentation</h1>
+        <p>This backend provides a clean interface for a universal decoupled group chat application. All endpoints support cross-origin queries (<strong>CORS enabled</strong>) and accept requests formatted as either raw JSON (<code>application/json</code>) or traditional form-data.</p>
+
+        <div class="note">
+            <strong>Base URL Configuration:</strong><br>
+            Local Server Root: <code>http://localhost/group-chat-backend</code>
+        </div>
+
+        <section id="register">
+            <h2>🔐 User Registration</h2>
+            <p>Creates a brand new identity inside the database system. Passwords undergo modern secure BCRYPT hashing natively on execution.</p>
+            
+            <div class="endpoint-block">
+                <span class="badge badge-post">POST</span> /register.php
+            </div>
+
+            <h3>Payload Example</h3>
+            <pre>{
+  "username": "example_user",
+  "email": "user@gmail.com",
+  "password": "securePassword123"
+}</pre>
+
+            <h3>Responses</h3>
+            <p><strong>Success (200 OK):</strong></p>
+            <pre>{
+  "status": "success",
+  "message": "Account created!"
+}</pre>
+            <p><strong>Duplicate / Integrity Errors (400 Bad Request):</strong></p>
+            <pre>{
+  "status": "error",
+  "message": "This username or email is already taken."
+}</pre>
+        </section>
+
+        <section id="login">
+            <h2>🔑 User Login</h2>
+            <p>Validates account profiles and spins up a local tracking engine session instance block.</p>
+            
+            <div class="endpoint-block">
+                <span class="badge badge-post">POST</span> /login.php
+            </div>
+
+            <h3>Payload Example</h3>
+            <pre>{
+  "username": "example_user",
+  "password": "securePassword123"
+}</pre>
+
+            <h3>Responses</h3>
+            <pre>{
+  "status": "success",
+  "message": "Logged in successfully",
+  "user": {
+    "id": 12,
+    "username": "example_user"
+  }
+}</pre>
+        </section>
+
+        <section id="logout">
+            <h2>🚪 User Logout</h2>
+            <p>Clears active server state structures cleanly instantly.</p>
+            
+            <div class="endpoint-block">
+                <span class="badge badge-post">POST</span> /logout.php
+            </div>
+
+            <h3>Responses</h3>
+            <pre>{
+  "status": "success",
+  "message": "Logged out successfully"
+}</pre>
+        </section>
+
+        <section id="send">
+            <h2>✉️ Send Group Message</h2>
+            <p>Broadcasts an individual text data payload string onto the global shared chat board wall.</p>
+            
+            <div class="endpoint-block">
+                <span class="badge badge-post">POST</span> /send_message.php
+            </div>
+
+            <h3>Payload Example</h3>
+            <pre>{
+  "sender_id": 12,
+  "message_text": "Hello world, testing the new live chat feed!"
+}</pre>
+
+            <h3>Responses</h3>
+            <pre>{
+  "status": "success",
+  "message": "Message sent"
+}</pre>
+        </section>
+
+        <section id="get">
+            <h2>🔄 Get Group Messages (Live Feed)</h2>
+            <p>Pulls down the historical data timeline records. User profiles attach securely to arrays automatically.</p>
+            
+            <div class="endpoint-block">
+                <span class="badge badge-get">GET</span> /get_messages.php
+            </div>
+
+            <div class="note">
+                <strong>💡 Frontend Execution Rule:</strong> Run a fetch query asynchronously targeting this file inside a standard JavaScript <code>setInterval()</code> block running continuously every <strong>5000ms (5 seconds)</strong> to build dynamic real-time user feed interfaces.
+            </div>
+
+            <h3>Response Example (200 OK)</h3>
+            <pre>{
+  "status": "success",
+  "messages": [
+    {
+      "id": 1,
+      "sender_id": 4,
+      "username": "admin_dev",
+      "message_text": "Database is running fine locally.",
+      "created_at": "2026-07-10 14:15:00"
+    },
+    {
+      "id": 2,
+      "sender_id": 12,
+      "username": "example_user",
+      "message_text": "Hello world, testing the new live chat feed!",
+      "created_at": "2026-07-10 14:22:11"
+    }
+  ]
+}</pre>
+        </section>
+    </main>
+
+</body>
+</html>
