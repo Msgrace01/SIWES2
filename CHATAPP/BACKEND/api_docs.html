@@ -121,9 +121,9 @@
         <h2>Chat API Docs</h2>
         <ul>
             <li><strong>Authentication</strong></li>
-            <li><a href="#register">— Register</a></li>
-            <li><a href="#login">— Login</a></li>
-            <li><a href="#logout">— Logout</a></li>
+            <li><a href="#Register">— Register</a></li>
+            <li><a href="#Login">— Login</a></li>
+            <li><a href="#Logout">— Logout</a></li>
             <li><strong>Chat Core</strong></li>
             <li><a href="#send">— Send Message</a></li>
             <li><a href="#get">— Get Feed</a></li>
@@ -136,7 +136,7 @@
 
         <div class="note">
             <strong>Base URL Configuration:</strong><br>
-            Local Server Root: <code>http://localhost/group-chat-backend</code>
+            Local Server Root: <code>https://ruth.alwaysdata.net/BACKEND</code>
         </div>
 
         <section id="register">
@@ -144,7 +144,7 @@
             <p>Creates a brand new identity inside the database system. Passwords undergo modern secure BCRYPT hashing natively on execution.</p>
             
             <div class="endpoint-block">
-                <span class="badge badge-post">POST</span> /register.php
+                <span class="badge badge-post">POST</span> /Register.php
             </div>
 
             <h3>Payload Example</h3>
@@ -172,7 +172,7 @@
             <p>Validates account profiles and spins up a local tracking engine session instance block.</p>
             
             <div class="endpoint-block">
-                <span class="badge badge-post">POST</span> /login.php
+                <span class="badge badge-post">POST</span> /Login.php
             </div>
 
             <h3>Payload Example</h3>
@@ -197,7 +197,7 @@
             <p>Clears active server state structures cleanly instantly.</p>
             
             <div class="endpoint-block">
-                <span class="badge badge-post">POST</span> /logout.php
+                <span class="badge badge-post">POST</span> /Logout.php
             </div>
 
             <h3>Responses</h3>

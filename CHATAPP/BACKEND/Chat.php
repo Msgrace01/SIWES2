@@ -15,13 +15,19 @@ class Chat implements DbInterface {
         $password = "ru2th4.ch1"; 
         $dbname = "ruth_chatapp";
 
-        $this->conn = new mysqli($host, $username, $password, $dbname);
+        try {
+            mysqli_report(MYSQLI_REPORT_OFF);
+            $this->conn = new mysqli($host, $username, $password, $dbname);
 
-        if ($this->conn->connect_error) {
+            if ($this->conn->connect_error) {
+                http_response_code(500);
+                die(json_encode(["status" => "error", "message" => "Database connection failed"]));
+            }
+        } catch (Exception $e) {
             http_response_code(500);
-            die(json_encode(["error" => "Database connection failed"]));
+            die(json_encode(["status" => "error", "message" => "Critical DB Error: " . $e->getMessage()]));
         }
-    }
+    } // connect() ends here cleanly now
 
     // Post a message to the group
     public function sendMessage($senderId, $messageText) {
@@ -52,7 +58,5 @@ class Chat implements DbInterface {
 
         return ["status" => "success", "messages" => $messages];
     }
-}
-
-new chat();
+} // Class correctly ends here (removed the broken standalone execution line)
 ?>

@@ -14,48 +14,52 @@ class Authentication implements DbInterface {
     }
 
     public function connect() {
-        $host = "localhost"; 
-        $username = "root"; 
-        $password = ""; 
-        $dbname = "chat_app";
+        $host = "mysql-ruth.alwaysdata.net"; 
+        $username = "ruth_chigozie"; 
+        $password = "ru2th4.ch1"; 
+        $dbname = "ruth_chatapp";
 
-        $this->conn = new mysqli($host, $username, $password, $dbname);
+        try {
+            // Force mysqli to report errors silently so we can handle them manually
+            mysqli_report(MYSQLI_REPORT_OFF);
+            $this->conn = new mysqli($host, $username, $password, $dbname);
 
-        if ($this->conn->connect_error) {
+            if ($this->conn->connect_error) {
+                http_response_code(500);
+                die(json_encode(["status" => "error", "message" => "Database connection failed"]));
+            }
+        } catch (Exception $e) {
             http_response_code(500);
-            die(json_encode(["error" => "Database connection failed"]));
+            die(json_encode(["status" => "error", "message" => "Critical DB Error: " . $e->getMessage()]));
         }
-    }
+    } // connect() ends here cleanly now
 
     // Register User
-public function registerUser($username, $email, $password) {
-    $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+    public function registerUser($username, $email, $password) {
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-    try {
-        $stmt = $this->conn->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
-        $stmt->bind_param("sss", $username, $email, $hashedPassword);
+        try {
+            $stmt = $this->conn->prepare("INSERT INTO users (username, email, password) VALUES (?, ?, ?)");
+            $stmt->bind_param("sss", $username, $email, $hashedPassword);
 
-        if ($stmt->execute()) {
-            return ["status" => "success", "message" => "Account created!", "user_id" => $stmt->insert_id];
-        } else {
-            return ["status" => "error", "message" => "Registration failed."];
-        }
-    } catch (mysqli_sql_exception $e) {
-        // Check if the error code is 1062 (MySQL's error code for duplicate entries)
-        if ($e->getCode() === 1062) {
+            if ($stmt->execute()) {
+                return ["status" => "success", "message" => "Account created!", "user_id" => $stmt->insert_id];
+            } else {
+                return ["status" => "error", "message" => "Registration failed."];
+            }
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() === 1062) {
+                return [
+                    "status" => "error", 
+                    "message" => "This username or email is already taken."
+                ];
+            }
             return [
                 "status" => "error", 
-                "message" => "This username or email is already taken."
+                "message" => "Database error: " . $e->getMessage()
             ];
         }
-        
-        // Return a generic fallback error for anything else
-        return [
-            "status" => "error", 
-            "message" => "Database error: " . $e->getMessage()
-        ];
     }
-}
 
     // Login User
     public function loginUser($username, $password) {
@@ -65,7 +69,6 @@ public function registerUser($username, $email, $password) {
         $result = $stmt->get_result();
 
         if ($row = $result->fetch_assoc()) {
-            // Verify plain text password against hashed password
             if (password_verify($password, $row['password'])) {
                 $_SESSION['user_id'] = $row['id'];
                 $_SESSION['username'] = $row['username'];
@@ -85,5 +88,5 @@ public function registerUser($username, $email, $password) {
         session_destroy();
         return ["status" => "success", "message" => "Logged out successfully"];
     }
-}
+} // Class now correctly closes at the very end of the file
 ?>

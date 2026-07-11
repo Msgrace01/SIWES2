@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wall — Group Chat</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- AUTH SCREEN -->
+<div class="auth-wrap" id="authScreen">
+  <div class="brand"><span class="mark"></span><h1>Wall</h1><span>group chat</span></div>
+
+  <div class="tabs">
+    <button id="tabLogin" class="active">Login</button>
+    <button id="tabRegister">Register</button>
+  </div>
+
+  <form id="loginForm">
+    <div class="field">
+      <label for="loginUsername">Username</label>
+      <input id="loginUsername" autocomplete="username" required>
+    </div>
+    <div class="field">
+      <label for="loginPassword">Password</label>
+      <input id="loginPassword" type="password" autocomplete="current-password" required>
+    </div>
+    <button class="go-btn" type="submit">Enter</button>
+    <div class="msg-line" id="loginMsg"></div>
+  </form>
+
+  <form id="registerForm" style="display:none;">
+    <div class="field">
+      <label for="regUsername">Username</label>
+      <input id="regUsername" required>
+    </div>
+    <div class="field">
+      <label for="regEmail">Email</label>
+      <input id="regEmail" type="email" required>
+    </div>
+    <div class="field">
+      <label for="regPassword">Password</label>
+      <input id="regPassword" type="password" required>
+    </div>
+    <button class="go-btn" type="submit">Create account</button>
+    <div class="msg-line" id="registerMsg"></div>
+  </form>
+</div>
+
+<!-- CHAT SCREEN -->
+<div class="app" id="appScreen">
+  <div class="app-header">
+    <div class="who">signed in as <b id="whoName"></b></div>
+    <div style="display:flex; align-items:center; gap:1rem;">
+      <div class="status"><span class="mark"></span>live</div>
+      <button class="logout" id="logoutBtn">Logout</button>
+    </div>
+  </div>
+
+  <div class="feed" id="feed">
+    <div class="empty">No messages yet — say something.</div>
+  </div>
+
+  <form class="composer" id="composerForm">
+    <input id="messageInput" placeholder="Type a message…" autocomplete="off" required>
+    <button type="submit" id="sendBtn">Send</button>
+  </form>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
