@@ -1,5 +1,5 @@
 // ---- Configuration ----
-const BASE_URL = "https://ruth.alwaysdata.net/BACKEND";
+const BASE_URL = "/CHATAPP/BACKEND";
 
 // ---- In-memory session state (no browser storage used) ----
 let currentUser = null;   // { id, username }
